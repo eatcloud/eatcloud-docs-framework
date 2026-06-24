@@ -12,13 +12,17 @@ Antes de comenzar cualquier tarea de desarrollo, refactorización o análisis de
 
 1. `docs/backend-standards.md`: Para entender el stack (NodeJS, Sequelize) y el Error Handling.
 2. `docs/api-standards.md`: Para entender el enrutamiento (`/api/`, `/apipub/`, `/crd/`).
-3. `docs/frontend-standards.md`: Para entender la validación de licencias y flujos restringidos.
-4. `docs/data-model.md`: Para entender cómo se estructura la base de datos (Ej. `eatc_cua`, `eatc_upgrade_events`).
+3. `docs/frontend-standards.md`: Para entender la validación de licencias.
+4. `docs/wapp-standards.md`: Para conocer las restricciones operativas inquebrantables de la App de Donantes (cero eliminación, etc.).
+5. `docs/bo-standards.md`: Para conocer los flujos administrativos y generación de certificados del Back Office.
+6. `docs/data-model.md`: Para entender cómo se estructura la base de datos (Ej. `eatc_kpi_rules`, `eatc_upgrade_events`).
 
 ## Asignación de Roles
 Dependiendo del ticket o de la petición del usuario, deberás adoptar UNO de los siguientes roles ubicados en `ai-specs/agents/`:
 - `backend-developer.md`
 - `frontend-developer.md`
+- `wapp-developer.md`
+- `bo-developer.md`
 - `qa-tester.md`
 - `data-analyst.md`
 
