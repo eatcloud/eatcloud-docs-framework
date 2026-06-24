@@ -3,70 +3,70 @@ description: Enforce mandatory steps from openspec/config.yaml when creating tas
 alwaysApply: true
 ---
 
-# OpenSpec Tasks: Mandatory Steps Enforcement
+# Tareas de OpenSpec: Cumplimiento de Pasos Obligatorios
 
-When creating or updating `tasks.md` artifacts in OpenSpec changes, you MUST:
+Al crear o actualizar los artefactos `tasks.md` en los cambios de OpenSpec, DEBES:
 
-## 1. Read openspec/config.yaml First
+## 1. Leer openspec/config.yaml Primero
 
-**BEFORE** creating or updating any `tasks.md` file, you MUST read `openspec/config.yaml` to understand:
-- Backend and frontend-specific mandatory steps
-- Branch naming conventions
-- Task structure requirements
-- Testing and documentation requirements
+**ANTES** de crear o actualizar cualquier archivo `tasks.md`, DEBES leer `openspec/config.yaml` para entender:
+- Pasos obligatorios específicos del backend y frontend
+- Convenciones de nombres de ramas
+- Requisitos de estructura de tareas
+- Requisitos de pruebas y documentación
 
-## 2. Mandatory Steps
+## 2. Pasos Obligatorios
 
-All implementation tasks MUST include these steps in the correct order:
+Todas las tareas de implementación DEBEN incluir estos pasos en el orden correcto:
 
-### Step 0: Create Feature Branch (MUST BE FIRST)
-- **Location**: Must be the very first step (Step 0)
-- **Branch naming**: `feature/[ticket-id]` or `feature/[change-name]`
-- **Action**: Create and switch to feature branch before any code changes
+### Paso 0: Crear Rama de Funcionalidad (DEBE SER EL PRIMERO)
+- **Ubicación**: Debe ser el primer paso absoluto (Paso 0)
+- **Nomenclatura de la rama**: `feature/[ticket-id]` o `feature/[change-name]`
+- **Acción**: Crear y cambiar a la rama de funcionalidad antes de cualquier cambio de código
 
-### Mandatory Steps (Must Be Included):
-- **Step N**: Review and Update Existing Unit Tests (MANDATORY)
-- **Step N+1**: Run Unit Tests and Verify Database State (MANDATORY)
-- **Step N+2**: Manual Endpoint Testing with curl (MANDATORY) - **AGENT MUST EXECUTE**
-- **Step N+3**: E2E Testing with Playwright MCP (MANDATORY if applicable) - **AGENT MUST EXECUTE**
-- **Step N+4**: Update Technical Documentation (MANDATORY)
+### Pasos Obligatorios (Deben ser Incluidos):
+- **Step N**: Revisar y Actualizar Pruebas Unitarias Existentes (OBLIGATORIO)
+- **Step N+1**: Ejecutar Pruebas Unitarias y Verificar el Estado de la Base de Datos (OBLIGATORIO)
+- **Step N+2**: Prueba Manual de Endpoints con curl (OBLIGATORIO) - **EL AGENTE DEBE EJECUTARLA**
+- **Step N+3**: Pruebas E2E con Playwright MCP (OBLIGATORIO si aplica) - **EL AGENTE DEBE EJECUTARLAS**
+- **Step N+4**: Actualizar Documentación Técnica (OBLIGATORIO)
 
-## 3. Manual Testing Requirements - CRITICAL: Agent Must Execute
+## 3. Requisitos de Pruebas Manuales - CRÍTICO: El Agente Debe Ejecutarlas
 
-**IMPORTANT**: The coding agent (AI) MUST perform all manual testing steps itself. **NEVER delegate testing to the user**. These tests must be executed by the agent to mark tasks as completed in `tasks.md`.
+**IMPORTANTE**: El agente de codificación (IA) DEBE realizar todos los pasos de pruebas manuales por sí mismo. **NUNCA delegar las pruebas al usuario**. Estas pruebas deben ser ejecutadas por el agente para marcar las tareas como completadas en `tasks.md`.
 
-### Step N+1: Run Unit Tests and Verify Database State (MANDATORY)
+### Step N+1: Ejecutar Pruebas Unitarias y Verificar el Estado de la Base de Datos (OBLIGATORIO)
 
-**Agent Responsibility**: The coding agent MUST execute unit tests, validate database integrity before/after execution, and produce a test report artifact in the change spec folder. This is NOT optional and cannot be delegated to the user.
+**Responsabilidad del Agente**: El agente de codificación DEBE ejecutar unit tests, validate database integrity before/after execution, and produce a test report artifact in the change spec folder. Esto NO es opcional y no puede ser delegado al usuario.
 
-**Implementation Steps** (Agent must perform):
-1. **Prepare Test Environment**:
+**Pasos de Implementación** (El agente debe realizarlos):
+1. **Preparar el Entorno de Pruebas**:
    - Ensure required services are available (database, cache, dependencies)
    - Capture pre-test database state relevant to the change (counts, key records, checksums, or snapshots)
    - Document the exact test command(s) that will be executed
 
-2. **Run Targeted Unit Tests First**:
+2. **Ejecutar Pruebas Unitarias Específicas Primero**:
    - Execute focused tests for the modified module(s) and related behavior
    - Confirm failures are resolved and no new regressions appear in targeted scope
    - Capture command output summary (passed/failed/skipped)
 
-3. **Run Broader Unit Test Suite**:
+3. **Ejecutar Suite de Pruebas Unitarias Amplia**:
    - Execute the project/unit suite required by `openspec/config.yaml` (or justified subset if configured)
    - Record total test counts, failures, runtime, and any flaky behavior observed
 
-4. **Verify Post-Test Database State**:
+4. **Verificar Estado de la Base de Datos Post-Prueba**:
    - Re-check the same database indicators captured before tests
    - Confirm no unintended mutations remain after tests complete
    - If any mutation occurred, restore state and document the restoration
 
-5. **Create Unit Test Verification Report in Spec Folder**:
+5. **Crear Reporte de Verificación de Pruebas Unitarias en la Carpeta de Specs**:
    - Save report under the current change folder in `specs/<change-name>/reports/`
    - Use this filename pattern: `YYYY-MM-DD-step-N+1-unit-test-and-db-verification.md`
    - Include executed commands, summarized results, database pre/post comparison, and cleanup actions
 
-6. **Mark Task as Completed**: Only after unit tests pass (or approved exceptions are documented), database state is verified/restored, and the report file is created, mark Step N+1 as completed in `tasks.md`.
+6. **Marcar Tarea como Completada**: Only after unit tests pass (or approved exceptions are documented), database state is verified/restored, and the report file is created, mark Step N+1 as completed in `tasks.md`.
 
-**Report Template** (store in `specs/<change-name>/reports/`):
+**Plantilla de Reporte** (store in `specs/<change-name>/reports/`):
 ```markdown
 # Step N+1 Report - Unit Tests and Database Verification
 
@@ -74,17 +74,17 @@ All implementation tasks MUST include these steps in the correct order:
 - Change: <change-name>
 - Agent: <agent-name>
 
-## Commands Executed
+## Comandos Ejecutados
 - `<command 1>`
 - `<command 2>`
 
-## Unit Test Results
+## Resultados de Pruebas Unitarias
 - Targeted tests: X passed, Y failed, Z skipped
 - Full/required suite: X passed, Y failed, Z skipped
 - Runtime: <duration>
-- Notes: <flaky tests, retries, exceptions>
+- Notas: <flaky tests, retries, exceptions>
 
-## Database State Verification
+## Verificación del Estado de la Base de Datos
 - Pre-test baseline:
   - <metric/table/check>: <value>
 - Post-test validation:
@@ -92,17 +92,17 @@ All implementation tasks MUST include these steps in the correct order:
 - State restored: Yes/No
 - Restoration actions (if any): <actions>
 
-## Outcome
+## Resultado
 - Step N+1 status: PASS/FAIL
 - Blocking issues: <none or list>
 ```
 
-**Dependencies**:
+**Dependencias**:
 - Test runner and project test dependencies installed
 - Database access for state verification/restoration
 - Permission to create report files in `specs/<change-name>/reports/`
 
-**Notes**:
+**Notas**:
 - **The agent MUST execute tests itself** - never ask the user to run tests
 - This step is mandatory even when code changes look small
 - Report naming must follow the required pattern for traceability
@@ -110,10 +110,10 @@ All implementation tasks MUST include these steps in the correct order:
 
 ### Step N+2: Manual Endpoint Testing with curl (MANDATORY)
 
-**Agent Responsibility**: The coding agent MUST execute all curl commands and verify responses. This is NOT optional and cannot be delegated to the user.
+**Responsabilidad del Agente**: El agente de codificación DEBE ejecutar all curl commands and verify responses. Esto NO es opcional y no puede ser delegado al usuario.
 
-**Implementation Steps** (Agent must perform):
-1. **Prepare Test Environment**:
+**Pasos de Implementación** (El agente debe realizarlos):
+1. **Preparar el Entorno de Pruebas**:
    - Ensure the backend server is running (start if needed)
    - Verify database connection is active
    - Note the current database state (if testing CREATE/UPDATE/DELETE endpoints)
@@ -155,14 +155,14 @@ All implementation tasks MUST include these steps in the correct order:
    - Test with unauthorized access (if applicable)
    - Verify error response format matches API specification
 
-7. **Mark Task as Completed**: Only after all curl tests pass and database state is restored, mark the task as completed in `tasks.md`
+7. **Marcar Tarea como Completada**: Only after all curl tests pass and database state is restored, mark the task as completed in `tasks.md`
 
-**Dependencies**:
+**Dependencias**:
 - Backend server running (agent must start if needed)
 - Database access for state restoration
 - curl command-line tool
 
-**Notes**:
+**Notas**:
 - This step is MANDATORY for all new endpoints
 - **The agent MUST execute all curl commands itself** - never ask the user to run tests
 - All CREATE/UPDATE/DELETE operations must restore database to original state after testing
@@ -173,15 +173,15 @@ All implementation tasks MUST include these steps in the correct order:
 
 ### Step N+3: E2E Testing with Playwright MCP (MANDATORY if applicable)
 
-**Agent Responsibility**: The coding agent MUST execute all E2E tests using Playwright MCP tools. This is NOT optional and cannot be delegated to the user.
+**Responsabilidad del Agente**: El agente de codificación DEBE ejecutar all E2E tests using Playwright MCP tools. Esto NO es opcional y no puede ser delegado al usuario.
 
-**When This Applies**:
+**Cuándo Aplica Esto**:
 - Frontend changes that affect user workflows
 - Integration between frontend and backend endpoints
 - User-facing features that require browser interaction
 
-**Implementation Steps** (Agent must perform):
-1. **Prepare Test Environment**:
+**Pasos de Implementación** (El agente debe realizarlos):
+1. **Preparar el Entorno de Pruebas**:
    - Ensure both frontend and backend servers are running (start if needed)
    - Verify database is in a known state
    - Check available Playwright MCP tools using MCP file system
@@ -215,15 +215,15 @@ All implementation tasks MUST include these steps in the correct order:
    - Restore database to original state
    - Close browser sessions
 
-7. **Mark Task as Completed**: Only after all E2E tests pass and environment is restored, mark the task as completed in `tasks.md`
+7. **Marcar Tarea como Completada**: Only after all E2E tests pass and environment is restored, mark the task as completed in `tasks.md`
 
-**Dependencies**:
+**Dependencias**:
 - Frontend server running (agent must start if needed)
 - Backend server running (agent must start if needed)
 - Playwright MCP tools available
 - Database access for verification and cleanup
 
-**Notes**:
+**Notas**:
 - **The agent MUST execute all E2E tests itself** - never ask the user to run tests
 - Use incremental waits (1-3 seconds) with snapshot checks rather than long waits
 - Always restore database state after tests that modify data
@@ -243,7 +243,7 @@ Before finalizing any `tasks.md` file, verify:
 - [ ] Tasks include database state restoration steps
 - [ ] E2E testing step is included if frontend changes are involved
 
-## 5. When This Applies
+## 5. Cuándo Aplica Esto
 
 This rule applies when:
 - Creating `tasks.md` via `/opsx:ff` (fast-forward) or `openspec-ff-change` skill
@@ -252,7 +252,7 @@ This rule applies when:
 - Any task creation that involves backend changes
 - Implementing tasks from `tasks.md` via `/opsx:apply` or `openspec-apply-change` skill - the agent must execute manual tests
 
-## 6. Example Structure
+## 6. Estructura de Ejemplo
 
 ```markdown
 ## 0. Setup: Create Feature Branch (MANDATORY - FIRST STEP)
@@ -263,10 +263,10 @@ This rule applies when:
 ## 1. Backend: Validator Tests (TDD)
 ...
 
-## 8. Backend: Review and Update Existing Unit Tests (MANDATORY)
+## 8. Backend: Revisar y Actualizar Pruebas Unitarias Existentes (OBLIGATORIO)
 ...
 
-## 9. Backend: Run Unit Tests and Verify Database State (MANDATORY)
+## 9. Backend: Ejecutar Pruebas Unitarias y Verificar el Estado de la Base de Datos (OBLIGATORIO)
 - [ ] 9.1 Capture pre-test database baseline for impacted entities
 - [ ] 9.2 Run targeted unit tests for changed modules
 - [ ] 9.3 Run required broader unit test suite from config
@@ -293,11 +293,11 @@ This rule applies when:
 - [ ] 11.6 Restore test environment and database state
 - [ ] 11.7 Document test scenarios and outcomes
 
-## 16. Update Technical Documentation (MANDATORY)
+## 16. Actualizar Documentación Técnica (OBLIGATORIO)
 ...
 ```
 
-## 7. Agent Execution Requirements
+## 7. Requisitos de Ejecución del Agente
 
 **CRITICAL**: When implementing tasks from `tasks.md` (via `openspec-apply-change` skill or `/opsx:apply` command), the coding agent MUST:
 
@@ -314,21 +314,21 @@ This rule applies when:
    - Database state has been restored (for CREATE/UPDATE/DELETE operations)
    - All test outcomes have been documented
 
-3. **Never Delegate Testing**: The agent must never:
+3. **Nunca Delegar Pruebas**: The agent must never:
    - Ask the user to run curl commands
    - Ask the user to test endpoints manually
    - Ask the user to run E2E tests
    - Mark tasks as completed without executing tests
    - Skip manual testing steps
 
-4. **Document Test Execution**: The agent must document:
+4. **Documentar la Ejecución de Pruebas**: The agent must document:
    - All curl commands executed
    - All responses received
    - All E2E test scenarios executed
    - Database state restoration actions
    - Any issues encountered and resolutions
 
-## Failure to Follow
+## Consecuencias de Incumplimiento
 
 If you create tasks without following these mandatory steps, the user will need to manually fix the tasks.md file. Always read `openspec/config.yaml` first and ensure all mandatory steps are included.
 
