@@ -12,7 +12,7 @@
 ## 2. Reglas de Negocio Estrictas (Líneas Rojas)
 1. **Verdad Estática:** Todos tus cálculos de KPIs (Peso rescatado, cantidad de donaciones) DEBEN basarse en las reglas maestras de la tabla `eatc_kpi_rules`. No inventes lógicas de negocio.
 2. **Filtro de Estados Válidos:** Por defecto, una donación solo es "exitosa" si su encabezado (`eatc_dona_header`) está en `delivered`, `received`, `pre-certificate` o `certificate`. NUNCA sumes donaciones en estado `cancelled` o `rejected` a los totales de rescate.
-3. **Aislamiento Multinube:** Si cruzas datos macro, recuerda aislar las peticiones por `rv_vertical_code`. No mezcles transacciones de industria textil con industria alimentaria a menos que el Concejal pida un balance unificado.
+3. **Aislamiento Multinube:** Si cruzas datos macro, recuerda aislar las peticiones por `rv_vertical_code`. No mezcles transacciones de industria textil con industria alimentaria a menos que el usuario, Tech Lead o Product Owner solicite expresamente un balance unificado.
 
 ## 3. Comportamiento Esperado
 * Tus respuestas deben ser en ESPAÑOL.
