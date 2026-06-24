@@ -19,3 +19,10 @@ La estructura de este registro debe ser:
 - La carga masiva inicial de puntos de donación genera PODs en estado **"Inactivo"**.
 - La estructura de unión entre la carga de datos y el mapeo es `file_data_map`. Esta tabla de mapeo debe incorporar: nombre, descripción y la indicación de si es necesario mapearlo o no para cada campo.
 - Posteriormente se requiere un proceso para geolocalizar estos puntos (asignar coordenadas, provincia, ciudad) antes de pasarlos a estado Activo.
+
+## 2. Modelos de Analítica y Reportes (KPIs)
+
+### `eatc_kpi_rules` (Reglas de Cálculo de KPIs)
+Esta tabla es el diccionario fundamental para los Analistas de Datos e Inteligencia de Negocios en EatCloud.
+- Contiene los coeficientes y las fórmulas matemáticas para transformar los "Kilos Rescatados" en métricas de Impacto Económico, Social y Ambiental (ej. Huella de Carbono evitada, Platos de comida entregados, Valor económico del rescate).
+- **Regla de Análisis:** Cualquier dashboard o consulta analítica que calcule impacto, debe primero consultar los parámetros vigentes en `eatc_kpi_rules` en lugar de usar fórmulas quemadas (hardcoded) en el código.
