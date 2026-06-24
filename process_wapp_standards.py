@@ -1,4 +1,26 @@
-# EatCloud WAPP Standards
+import os
+import glob
+
+docs_dir = "/Users/usuario2/Documents/eatcloud-docs-framework/raw_docs"
+wapp_standards_path = "/Users/usuario2/Documents/eatcloud-docs-framework/docs/wapp-standards.md"
+
+def get_markdown_content(filename):
+    filepath = os.path.join(docs_dir, filename)
+    if os.path.exists(filepath):
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    return ""
+
+# Leemos las reglas de negocio de los RAWs
+edicion = get_markdown_content("WAPP-Modernizada--restricción-de-edición-de-donaciones.aspx.md")
+eliminacion = get_markdown_content("WAPP-Modernizada--restricción-de-eliminación-de-donaciones.aspx.md")
+asignacion = get_markdown_content("WAPP-Modernizada--asignación-de-donación-desde-el-POD-(punto-de-donación).aspx.md")
+lote = get_markdown_content("WAPP-Modernizada--captura-del-campo--lote--obligatoria-por--cua_master-.aspx.md")
+no_entregadas = get_markdown_content("WAPP-Modernizada--restricción-para-marcar-como-no-entregadas-las-donaciones-de-un-POD-donaciones.aspx.md")
+archivos_planos = get_markdown_content("WAPP--Creación-de-Donaciones-por-archivo-plano--integración-de-clasificadores.aspx.md")
+
+# Actualizamos wapp-standards.md
+wapp_md = f"""# EatCloud WAPP Standards
 
 Este documento centraliza todas las reglas de negocio, validaciones y restricciones exclusivas del Frontend de la aplicación web (WAPP) modernizada.
 
@@ -52,3 +74,9 @@ La WAPP permite cargas masivas a través de archivos planos.
 
 ---
 > **Nota:** Todos los agentes (Especialmente WAPP Developer) deben consultar este archivo en cada modificación de la interfaz gráfica y validación de botones.
+"""
+
+with open(wapp_standards_path, "w", encoding="utf-8") as f:
+    f.write(wapp_md)
+
+print("wapp-standards.md actualizado con la extracción profunda.")
