@@ -62,10 +62,10 @@
  Validacin previa de la existencia de la cuenta (cliente) en el CRM 
  Antes de realizar la creacin del " Deal ", se debe proceder a utilizar el siguiente llamado CURL para verificar que la cuenta (cliente) exista en el CRM: 
 
- curl -H "Authorization: Token token= 9k8XDftcerh6IViJOyZCwQ " -H "Content-Type: application/json " -X GET " https://eatcloud-team.myfreshworks.com/crm/sales /api/sales_accounts/{{eatc_customer. crm_id }} " 
+ curl -H "Authorization: Token token= REDACTED " -H "Content-Type: application/json " -X GET " https://eatcloud-team.myfreshworks.com/crm/sales /api/sales_accounts/{{eatc_customer. crm_id }} " 
 
  Si el cliente  (cuenta) no existe en el CRM, se debe proceder a realizar el respectivo llamado al servicio de integracin ( verificarlo por favor con Jess )  
- token= 9k8XDftcerh6IViJOyZCwQ 
+ token= REDACTED 
 
  Llamado al API del CRM para la creacin del "deal" 
  Si el cliente existe en el CRM, se deben enviar al API de integracin con el CRM los siguientes datos, segn la documentacin ( https://developers.freshworks.com/crm/api/#deals )  deben tener una estructura como la siguiente (se realizar referencia a las variables consultadas anteriormente): 
@@ -87,7 +87,7 @@
  El mismo se construye con datos de la cuenta (por ejemplo: eatc_cua. vertical ) e informacin se se construye para llegar a esta funcionalidad o mediante la misma funcionalidad (como por ejemplo: nombre_del_nuevo_plan y obs_adionales ). Si el llamado al API no funciona con ese objeto se debe dejar planteado para futuras revisiones (dado que los campos "custom" requieren de una configuracin previa en el CRM, que ya se realiz pero no se ha probado). 
 
  cURL 
- curl -H "Authorization: Token token= 9k8XDftcerh6IViJOyZCwQ " -H "Content-Type: application/json" -d '{"deal":{"name":" nombre_deal ", "amount": amount , "sales_account_id": [[eatc_customer. crm_id ]] , "created_at": [[ datetime_stamp ]]   
+ curl -H "Authorization: Token token= REDACTED " -H "Content-Type: application/json" -d '{"deal":{"name":" nombre_deal ", "amount": amount , "sales_account_id": [[eatc_customer. crm_id ]] , "created_at": [[ datetime_stamp ]]   
  "custom_field":{"cf_puntos_conectados":[[ pods_activos ]], "cf_responsable":" Isis y Simn ","cf_vertical":[[eatc_cua .vertical ]], "cf_licencias_rescate":[[ nombre_del_nuevo_plan ]],"cf_observaciones":[[ obs_adionales ]]} }}' -X POST "https:// https://eatcloud-team.myfreshworks.com /crm/sales/api/deals" 
 
  Nota para la implementacin: el llamado cURL no estaba presente en la documentacin , as que el mismo se document abstrayendo de otro llamado similar.  Por ese motivo se deber probar si el llamado funciona y de no funcionar revisar con llamados cURL documentados en otras partes de la API. 

@@ -1,0 +1,100 @@
+# upgrade-por-info-cancelaciones.aspx
+
+0x0101009D1CB255DA76424F860D91F20E6C411800C12E4AF3524183439921C4A8ABBCA98F 
+ Article 
+
+ URL&#58; &#123;&#123;URL_entorno_datagov&#125;&#125;/_dgbo/#!/upgrade_by_info_cancel 
+
+ R EGISTRO DE EVENTO DE UPGRADE AL INGRESAR A LA PGINA 
+ Nota para el desarrollo&#58; la implementacin ser muy similar a la de las pginas de upgrade de licencias de rescate, con la diferencia que en esta implementacin se consultan datos de licencias Analytics (por ejemplo&#58; eatc_actual_analytics_plan ) que en adelante se resaltarn en azul 
+&#160; 
+ El ingresar a la pgina, se debe capturar el ingreso a la misma como un evento de upgrade debe ser capturado por la plataforma para ser guardado en la estructura que se destina para tal fin ( eatc_upgrade_events alojada en el entorno datagov de la cuenta eatcloud) de la siguiente manera&#58; 
+&#160; 
+ &#123;&#123;parametros_registro&#125;&#125; 
+&#160; 
+ eatc_datetime = &#123;&#123;timestamp_en_formato AAAA-MM-DD HH&#58;MM&#58;SS &#125;&#125; 
+ eatc_date = &#123;&#123;datestamp_en_formato AAAA-MM-DD &#125;&#125; 
+ eatc_country = &#123;&#123; URL_entorno_datagov &#125;&#125;/api/eatcloud/ eatc_cua ?name=&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct =eatc_country 
+ eatc_cua_master = &#123;&#123; URL_entorno_datagov &#125;&#125;/api/eatcloud/ eatc_cua ?name=&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct = eatc_cua_master 
+ eatc_cua = &#123;&#123;_DOM. cua_user &#125;&#125; 
+ eatc_platform = datagov_cuentas 
+ eatc_upgrade_event = upgrade_by_info_cancel 
+ eatc_user = &#123;&#123; URL_entorno_donantes &#125;&#125;/api/&#123;&#123;_DOM. cua_user &#125;&#125;/ bo_usuarios? nombre_usuario = &#123;&#123; bo_usuarios. nombre_usuario &#125;&#125;&amp;_distinct = email 
+ eatc_actual_rescue_plan = &#123;&#123; URL_entorno_datagov &#125;&#125;/api/eatcloud/ eatc_cua ?name=&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct =type 
+ eatc_actual_analytics_plan =&#123;&#123; URL_entorno_datagov &#125;&#125;/ api/eatcloud/ eatc_data_analytics_cua ? eatc_cua =&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct= eatc_data_analytics_code 
+&#160; 
+ Llamado al api con los &#123;&#123;parametros_registro&#125;&#125; (en el llamado los parmetros se separan por &quot; &amp; &quot;) 
+ &#123;&#123; URL_entorno_datagov &#125;&#125;/crd/eatcloud/?_tabla=eatc_upgrade_events&amp;_operacion=insert&amp; &#123;&#123;parametros_registro&#125;&#125; 
+
+&#160; 
+ Ejemplo&#58; entorno de pruebas, cuenta &quot; abaco &quot;, bo_usuarios. nombre_usuario &quot; abaco &quot;, el &quot; 2021-09-11 14&#58;43&#58;00 &quot; 
+&#160; 
+ El sistema toma los siguientes datos 
+ eatc_datetime = 2021-09-11 14&#58;43&#58;00 
+ eatc_date = 2021-09-11 
+ eatc_country = https&#58;//dev.datagov.eatcloud.info/api/eatcloud/ eatc_cua ?name= abaco &amp;_distinct =eatc_country = co 
+ eatc_cua_master = https&#58;//dev.datagov.eatcloud.info/api/eatcloud/ eatc_cua ?name= abaco &amp;_distinct =eatc_cua_master = abaco 
+ eatc_cua = abaco 
+ eatc_platform = datagov_cuentas 
+ eatc_upgrade_event = upgrade_by_info_cancel 
+ eatc_user = https&#58;//devdonantes.eatcloud.info//api/ abaco / bo_usuarios? nombre_usuario = abaco&amp;_distinct =email = jdr@nodrizza.com 
+ eatc_actual_rescue_plan = https&#58;//dev.datagov.eatcloud.info/api/eatcloud/ eatc_cua ?name= abaco &amp;_distinct =type = free 
+ eatc_actual_analytics_plan = https&#58;//dev.datagov.eatcloud.info/api/eatcloud/ eatc_data_analytics_cua ? eatc_cua =abaco&amp;_distinct= eatc_data_analytics_code = &quot;&quot; (vaco, porque la consulta no arroja resultados) 
+&#160; 
+ Entonces se realiza el siguiente llamado al API de creacin de registro 
+ https&#58;//dev.datagov.eatcloud.info/crd/eatcloud/?_tabla=eatc_upgrade_events&amp;_operacion=insert&amp; eatc_datetime =2021-09-11%2014&#58;43&#58;00&amp; eatc_date =2021-09-11&amp; eatc_country= co&amp; eatc_cua_master =abaco&amp; eatc_cua =abaco&amp; eatc_platform =datagov_cuentas&amp; eatc_upgrade_event = upgrade_by_info_cancel &amp; eatc_user =jdr@nodrizza.com&amp; eatc_actual_rescue_plan =free &amp; eatc_actual_analytics_plan = 
+&#160; 
+ M ENSAJE PERSONALIZADO 
+
+ [USER_FIRST_NAME] 
+ &#123;&#123; URL_entorno_donantes &#125;&#125;/api/&#123;&#123;_DOM. cua_user &#125;&#125;/ bo_usuarios ?id=&#123;&#123;bo_usuarios. usuario &#125;&#125;&amp;_distinct =nombre_usuario 
+&#160; 
+ lo sentimos!... &#58;( 
+ class= lbl_lo_sentimos ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_lo_sentimos ) 
+&#160; 
+ Para desplegar la siguiente parte del mensaje, el sistema deber evaluar si la cuenta tiene una licencia analytics o no, de la siguiente manera 
+&#160; 
+ Si la cuenta NO posee una licencia analytics 
+ Si &#123;&#123; URL_entorno_datagov &#125;&#125;/ api/eatcloud/ eatc_data_analytics_cua ? eatc_cua =&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct= eatc_data_analytics_code = vaco, porque la consulta no arroja resultados 
+&#160; 
+ Entonces se despliega el siguiente mensaje&#58; 
+ class= lbl_sin_licencia_analytics ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_sin_licencia_analytics ) &quot;Actualmente no cuentas con una licencia de EatCloud Analytics. Esta funcionalidad est disponible para nuestra licencia 360.&#160; Si deseas acceder a ella, sube de nivel y adquiere nuestra licencia EatCloud Analytics 360.&quot; 
+&#160; 
+ Si la cuenta posee una licencia analytics eficiencia , sostenibilidad o ahorro 
+ Si &#123;&#123; URL_entorno_datagov &#125;&#125;/ api/eatcloud/ eatc_data_analytics_cua ? eatc_cua =&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct= eatc_data_analytics_code = eficiencia o sostenibilidad o ahorro 
+&#160; 
+ Entonces se despliega el siguiente mensaje&#58; 
+&#160; 
+ Tu plan (concat) &#123;&#123;plan_analytics&#125;&#125; (concat) no cuenta con la funcionalidad (concat) del informe de detalle de donaciones 
+ class= lbl_tu_plan ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_tu_plan )&#160; 
+&#160; 
+ &#123;&#123;plan_analytics&#125;&#125; 
+&#160; 
+ Para desplegar la etiqueta del plan analytics, primero debe establecerse cul es el plan que posee el cliente (que se puede realizar con la siguiente consulta, que tambin se realiz anteriormente)&#58; 
+ &#123;&#123; URL_entorno_datagov &#125;&#125;/ api/eatcloud/ eatc_data_analytics_cua ? eatc_cua =&#123;&#123;_DOM. cua_user &#125;&#125;&amp;_distinct= eatc_data_analytics_code&#160; 
+&#160; 
+ Para con el dato obtenido ( eatc_data_analytics_cua .eatc_data_analytics_code )&#160; realizar la siguiente consulta&#58; 
+ &#123;&#123; URL_entorno_datagov &#125;&#125;/ api/eatcloud/ eatc_data_analytics_licences?eatc_code= &#123;&#123; eatc_data_analytics_cua .eatc_data_analytics_code &#125;&#125; &amp;_distinct= eatc_label 
+
+&#160; 
+ class= lbl_no_cuenta_con_funcionalidad ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_no_cuenta_con_funcionalidad )&#160; 
+
+&#160; 
+ class= lbl_info_cancelaciones ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_info_cancelaciones )&#160; 
+
+&#160; 
+ Actualizate a EatCloud Analytics 360 (concat) para contar con esta funcionalidad que te permite conocer detalles importantes de las donaciones que no estn siendo adjudicadas a travs de Eatcloud 
+
+&#160; 
+ class= lbl_actualiza_a_analytics_360 ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_actualiza_a_analytics_360 )&#160; 
+
+ class= lbl_para_info_cancelaciones ( https&#58;//dev.datagov.eatcloud.info/api/eatcloud/eatc_config_labels?plataforma=datagov_cuentas&amp;lang=_*&amp;pais=_*&amp;idlabel= lbl_para_info_cancelaciones )&#160; 
+
+ I NFORMACIN DE LOS PLANES 
+ Incorpora la informacin que se llev en las cards de los planes en la landing analytics 
+
+ b6917cb1-93a0-4b97-a84d-7cf49975d4ec 
+
+ https://eatcloudcorp.sharepoint.com/_layouts/15/images/sitepagethumbnail.png, /_layouts/15/images/sitepagethumbnail.png 
+
+ UPGRADE POR INFORME DE CANCELACIONES
